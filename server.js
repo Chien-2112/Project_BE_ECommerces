@@ -2,11 +2,17 @@
  * Nhiệm vụ file server.js => Khai báo PORT & khởi động server.
  * => Kết nối với network NodeJS.
  */
+"use strict";
 import app from "./source/app.js";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+dotenv.config();
 
-const PORT = 5001;
+const PORT = process.env.PORT || 5000;
+console.log("Current environment: ", process.env.NODE_ENV);
 
 const server = app.listen(PORT, () => {
+	console.log("----------------------------------------")
 	console.log(`My WebServer is running on port ${PORT}`);
 });
 
@@ -22,7 +28,9 @@ const server = app.listen(PORT, () => {
  * 				  => Thoát process sau khi server đóng.
  */
 process.on('SIGINT', () => {
-	server.close(() => {
+	server.close( async () => {
+		await mongoose.disconnect();
+		console.log(`Disconnected DB!`);
 		console.log(`Exit Server Express`);
 		process.exit(0); // Thoát process sau khi server đóng.
 	});

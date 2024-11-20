@@ -1,4 +1,4 @@
-## NODEJS 19 RELEASE.
+## CHAPTER 2: NODEJS 19 RELEASE.
 
 +. Với những lập trình viên làm Back-end sử dụng Nodejs làm core thì những động thái phát hành version mới của NodeJS sẽ được quan tâm và tôi cũng không ngoại lệ.
 
