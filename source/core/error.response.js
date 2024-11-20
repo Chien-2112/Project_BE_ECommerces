@@ -1,6 +1,7 @@
 "use strict";
 
 const StatusCode = {
+	BAD_REQUEST: 400,
 	UNAUTHORIZED: 401,
 	FORBIDDEN: 403,
 	CONFLICT: 409,
@@ -29,7 +30,7 @@ const ReasonStatusCode = {
 	 * 
 	 * => KL: Người dùng đã xác thực nhưng không đủ quyền truy cập.
 	 */
-	FORBIDDEN: 'Bad Request Error',
+	FORBIDDEN: 'Forbidden error',
 
 	/**
 	 * 409 - CONFLICT.
@@ -39,7 +40,8 @@ const ReasonStatusCode = {
 	 *     +. Vi phạm logic nghiệp vụ(VD: Đặt lịch hẹn vào thời gian đã được đặt trước).
 	 */
 	CONFLICT: "Conflict Error",
-	NOTFOUND: "Not Found"
+	NOTFOUND: "Not Found",
+	BAD_REQUEST: "Bad Request"
 }
 
 class ErrorResponse extends Error {
@@ -55,7 +57,7 @@ class ConflictRequestError extends ErrorResponse {
 	}
 }
 
-class BadRequestError extends ErrorResponse {
+class ForBiddenError extends ErrorResponse {
 	constructor(message = ReasonStatusCode.FORBIDDEN, statusCode = StatusCode.FORBIDDEN) {
 		super(message, statusCode);
 	}
@@ -69,6 +71,12 @@ class UnauthorizedRequestError extends ErrorResponse {
 
 class NotFoundError extends ErrorResponse {
 	constructor(message = ReasonStatusCode.NOTFOUND, statusCode = StatusCode.NOTFOUND) {
+		super(message, statusCode);
+	}
+}
+
+class BadRequestError extends ErrorResponse {
+	constructor(message = ReasonStatusCode.BAD_REQUEST, statusCode = StatusCode.BAD_REQUEST) {
 		super(message, statusCode);
 	}
 }

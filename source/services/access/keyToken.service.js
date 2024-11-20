@@ -2,6 +2,7 @@
 
 import { Types } from "mongoose";
 import { KEYTOKEN } from "../../models/keytoken.model.js";
+import { BadRequestError } from "../../core/error.response.js";
 
 class KeyTokenService {
 	static createKeyToken = async(
@@ -62,7 +63,7 @@ class KeyTokenService {
 
 	static removeKeyById = async(id) => {
 		if(!Types.ObjectId.isValid(id)) {
-			throw new Error("Invalid ID Format");
+			throw new BadRequestError("Invalid ID Format");
 		}
 		return await KEYTOKEN.deleteOne({ user_id: id });
 	} 

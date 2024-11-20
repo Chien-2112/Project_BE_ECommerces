@@ -32,7 +32,7 @@ const validateToken = asyncHandler(async(request, response, next) => {
 			if(userId !== decodedUser.user.userId) throw new UnauthorizedRequestError("Invalid UserId");
 			request.keyToken = keyToken;
 			console.log(`[1]::`, request.keyToken);
-			request.user = decodedUser;
+			request.user = decodedUser.user;
 			console.log(`[2]::`, request.user);
 			request.refreshToken = refreshToken;
 			console.log(`[3]::`, request.refreshToken);
@@ -48,7 +48,9 @@ const validateToken = asyncHandler(async(request, response, next) => {
 		try {
 			const decodedUser = jwt.verify(token, publicKey);
 			console.log(`Decoded user: ${decodedUser}`);
-			if(userId !== decodedUser.userId) throw new UnauthorizedRequestError("Invalid UserId");
+			if(userId !== decodedUser.user.userId) 
+				throw new UnauthorizedRequestError("Invalid UserId");
+			request.user = decodedUser.user;
 			request.keyToken = keyToken;
 			return next();
 		} catch(err) {

@@ -35,5 +35,5 @@ class CREATED extends SuccessResponse {
 }
 
 export {
-	OK, CREATED
+	OK, CREATED, SuccessResponse
 }

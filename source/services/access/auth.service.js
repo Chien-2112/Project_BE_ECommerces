@@ -84,9 +84,6 @@ class AuthService {
 	// SIGNIN SERVICE.
 	static signIn = async({ email, password }) => {
 		const foundShop = await SHOP.findOne({ email }).lean();
-		if(!foundShop) {
-			throw new UnauthorizedRequestError("Email or Password not matched!");
-		}
 		const validPassword = await bcrypt.compare(
 			password, foundShop.password
 		);
