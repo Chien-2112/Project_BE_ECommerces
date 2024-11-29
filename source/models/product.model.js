@@ -1,6 +1,7 @@
 "use strict";
 
 import { Schema, model } from "mongoose";
+import slugify from "slugify";
 
 const DOCUMENT_NAME = "Product";
 const COLLECTION_NAME = "Products";
@@ -18,9 +19,9 @@ const productSchema = new Schema({
 	product_description: {
 		type: String
 	},
-	// product_slug: {
-	// 	type: String
-	// },
+	product_slug: {
+		type: String
+	},
 	product_price: {
 		type: Number,
 		required: true
@@ -42,8 +43,31 @@ const productSchema = new Schema({
 	product_attributes: {
 		type: Schema.Types.Mixed,
 		required: true
-	}
+	},
 	// MORE.
+	product_ratingsAverage: {
+		type: Number,
+		default: 4.5,
+		min: [1, 'Rating must be above 1.0'],
+		max: [5, 'Rating must be above 5.0'],
+		set: (val) => Math.round(val * 10) / 10
+	},
+	product_variations: {
+		type: Array,
+		default: []
+	},
+	isDraft: {
+		type: Boolean,
+		default: true,
+		index: true,
+		select: false // Mỗi lần truy vấn => Không trả về trường này.
+	},
+	isPublished: {
+		type: Boolean,
+		default: false,
+		index: true,
+		select: false
+	}
 }, {
 	/**
 	 * Xác định tên của collection trong MongoDB sẽ lưu trữ documents.
@@ -57,6 +81,19 @@ const productSchema = new Schema({
 	 */
 	timestamps: true
 });
+
+// CREATE INDEX FOR SEARCH => FULL TEXT SEARCH MONGODB.
+productSchema.index({ 
+	product_name: 'text', 
+	product_description: 'text'
+});
+
+// DOCUMENT MIDDLEWARE: RUNS BEFORE .SAVE() and .CREATE()...
+productSchema.pre('save', function(next) {
+	this.product_slug = slugify(this.product_name, { lower: true })
+	next();
+});
+
 
 // DEFINED THE PRODUCT TYPE = CLOTHING.
 const clothingSchema = new Schema({
@@ -115,7 +152,7 @@ const furnitureSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		required: true,
 		ref: "Shop"
-	}
+	},
 }, {
 	collection: "Furnitures",
 	timestamps: true

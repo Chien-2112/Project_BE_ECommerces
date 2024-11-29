@@ -55,7 +55,7 @@ class KeyTokenService {
 			const options = { new: true, upsert: true };
 			const tokens = await KEYTOKEN.findOneAndUpdate(filter, update, options);
 	
-			return tokens ? publicKeyString : null;
+			return tokens ? publicKey : null;
 		} catch(err) {
 			return err;
 		}
