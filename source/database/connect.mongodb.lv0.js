@@ -1,4 +1,3 @@
-// LV_0 - CÁCH CONNECT DB CŨ.
 "use strict";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -6,7 +5,6 @@ dotenv.config();
 
 const connectString = process.env.URL_MONGODB;
 
-// CREATE FUNCTION - USING ASYNC-AWAIT + TRY...CATCH...
 const connectDB = async() => {
 	try {
 		const connect = await mongoose.connect(connectString);
