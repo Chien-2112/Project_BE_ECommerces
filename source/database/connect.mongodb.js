@@ -1,4 +1,3 @@
-// LV_1 - CÁCH CONNECT DB MỚI.
 "use strict";
 import mongoose from "mongoose";
 import { countConnect } from "../helpers/check.connect.js";
@@ -7,7 +6,6 @@ dotenv.config();
 
 const connectString = process.env.URL_MONGODB;
 
-// USING SINGLETON - DESIGN PATTERN.
 class Database {
 	constructor() {
 		this.connectDB();
